@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Library Management System - DSA Mini Project</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>📖 Smart Library</h2>
+      <p>DSA Computer Engg Mini Project</p>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-section-title">Main System</li>
+      <li><a class="nav-item active" data-tab="dashboard"><span>📊 Dashboard</span></a></li>
+      <li><a class="nav-item" data-tab="book-management"><span>📚 Book Management</span><span class="badge" id="badgeBooksCount">0</span></a></li>
+      <li><a class="nav-item" data-tab="member-management"><span>👥 Member Management</span><span class="badge" id="badgeMembersCount">0</span></a></li>
+      <li><a class="nav-item" data-tab="issue-system"><span>🔄 Book Issue & Return</span></a></li>
+
+      <li class="nav-section-title">Data Structures Demo</li>
+      <li><a class="nav-item" data-tab="sll-operations"><span>🔗 Linked List Demo</span></a></li>
+      <li><a class="nav-item" data-tab="stack-system"><span>🥞 Stack Demo</span><span class="badge" id="badgeStackCount">0</span></a></li>
+      <li><a class="nav-item" data-tab="queue-system"><span>👥 Queue Demo</span><span class="badge" id="badgeQueueCount">0</span></a></li>
+      <li><a class="nav-item" data-tab="sparse-matrix"><span>🔢 Sparse Matrix Demo</span></a></li>
+
+      <li class="nav-section-title">Algorithms & Analysis</li>
+      <li><a class="nav-item" data-tab="searching-workbench"><span>🔍 Searching Module</span></a></li>
+      <li><a class="nav-item" data-tab="sorting-workbench"><span>⚡ Sorting Module</span></a></li>
+      <li><a class="nav-item" data-tab="algorithm-analysis"><span>📈 Algorithm Analysis</span></a></li>
+      <li><a class="nav-item" data-tab="algorithm-paradigms"><span>🧩 Algorithm Paradigms</span></a></li>
+
+      <li class="nav-section-title">Submission & Viva</li>
+      <li><a class="nav-item" data-tab="documentation"><span>📄 Project Documentation</span></a></li>
+      <li><a class="nav-item" data-tab="viva-section"><span>🎓 Viva Voce Q&A</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <main class="main-wrapper">
+    <!-- TOP HEADER -->
+    <header class="top-header">
+      <h1 id="pageTitle">Smart Library Management System</h1>
+      <div class="header-badges">
+        <span class="tech-badge">Linked Lists</span>
+        <span class="tech-badge">Stack & Queue</span>
+        <span class="tech-badge">Sparse Matrix</span>
+        <span class="tech-badge">Searching & Sorting</span>
+      </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+      <div id="globalAlertBanner" style="display:none; padding:0.75rem 1rem; margin-bottom:1rem; border-radius:6px; background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; font-weight:600; font-size:0.88rem;"></div>
+
+      <!-- MODULE 1: DASHBOARD -->
+      <section id="dashboard" class="tab-page active">
+        <div class="grid-stats">
+          <div class="stat-card">
+            <div class="stat-icon blue">📚</div>
+            <div class="stat-info">
+              <div class="stat-value" id="dashTotalBooks">0</div>
+              <div class="stat-label">Total Books</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">✔</div>
+            <div class="stat-info">
+              <div class="stat-value" id="dashAvailableBooks">0</div>
+              <div class="stat-label">Available Copies</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon warning">🔄</div>
+            <div class="stat-info">
+              <div class="stat-value" id="dashIssuedBooks">0</div>
+              <div class="stat-label">Issued Copies</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">👥</div>
+            <div class="stat-info">
+              <div class="stat-value" id="dashTotalMembers">0</div>
+              <div class="stat-label">Total Members</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">⏳</div>
+            <div class="stat-info">
+              <div class="stat-value" id="dashPendingQueue">0</div>
+              <div class="stat-label">Pending Requests</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Recent Book Issue Records</div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Record ID</th>
+                  <th>Book Title</th>
+                  <th>Member Name</th>
+                  <th>Issue Date</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashRecentActivityTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="card">
+            <div class="card-title">Latest Books Inventory</div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Book ID</th><th>Name</th><th>Author</th><th>Category</th><th>Copies</th></tr>
+                </thead>
+                <tbody id="dashRecentBooksTbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Latest Members Registered</div>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Member ID</th><th>Name</th><th>Dept</th><th>Role</th></tr>
+                </thead>
+                <tbody id="dashRecentMembersTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 2: BOOK MANAGEMENT -->
+      <section id="book-management" class="tab-page">
+        <div class="card">
+          <div class="card-title">Add New Book</div>
+          <form id="inlineAddBookForm" class="form-row">
+            <div class="form-group">
+              <label>Book Name</label>
+              <input type="text" id="inlineBookTitleInput" class="form-control" placeholder="e.g. Operating Systems" required>
+            </div>
+            <div class="form-group">
+              <label>Author</label>
+              <input type="text" id="inlineBookAuthorInput" class="form-control" placeholder="e.g. Galvin" required>
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <select id="inlineBookCategoryInput" class="form-control">
+                <option value="Computer Engg">Computer Engg</option>
+                <option value="Algorithms">Algorithms</option>
+                <option value="Software Engg">Software Engg</option>
+                <option value="Databases">Databases</option>
+                <option value="AI & ML">AI & ML</option>
+                <option value="Networking">Networking</option>
+                <option value="Mathematics">Mathematics</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Total Copies</label>
+              <input type="number" id="inlineBookCopiesInput" class="form-control" min="1" value="3" required>
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <button type="submit" class="btn btn-primary" style="width:100%;">+ Add Book</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="toolbar">
+            <div style="flex:1; max-width:350px;">
+              <input type="text" id="bookSearchInput" class="form-control" placeholder="Search by Book ID, Name, Author, Category...">
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+              <select id="bookQuickSortSelect" class="form-control" style="width:160px;">
+                <option value="">Sort Books by...</option>
+                <option value="id">Book ID</option>
+                <option value="title">Book Name</option>
+                <option value="availableCopies">Availability</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Book ID</th>
+                  <th>Book Name</th>
+                  <th>Author</th>
+                  <th>Category</th>
+                  <th>Copies (Avail/Total)</th>
+                  <th>Availability</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="booksTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 3: MEMBER MANAGEMENT -->
+      <section id="member-management" class="tab-page">
+        <div class="card">
+          <div class="card-title">Add New Member</div>
+          <form id="addMemberForm" class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="memberNameInput" class="form-control" placeholder="e.g. Alex Mercer" required>
+            </div>
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" id="memberDeptInput" class="form-control" placeholder="e.g. Computer Engg" required>
+            </div>
+            <div class="form-group">
+              <label>Contact Number</label>
+              <input type="text" id="memberContactInput" class="form-control" placeholder="e.g. 9876543210" required>
+            </div>
+            <div class="form-group">
+              <label>Role</label>
+              <select id="memberRoleInput" class="form-control">
+                <option value="Student">Student (Priority 1)</option>
+                <option value="Faculty">Faculty (Priority 3)</option>
+              </select>
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <button type="submit" class="btn btn-primary" style="width:100%;">+ Add Member</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Registered Library Members</div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Member ID</th>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Contact</th>
+                  <th>Role</th>
+                  <th>Books Issued</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="membersTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 4: BOOK ISSUE & RETURN -->
+      <section id="issue-system" class="tab-page">
+        <div class="form-row">
+          <div class="card">
+            <div class="card-title">🔄 Issue a Book</div>
+            <form id="issueBookForm">
+              <div class="form-group">
+                <label>Select Book</label>
+                <select id="issueBookSelect" class="form-control" required></select>
+              </div>
+              <div class="form-group">
+                <label>Select Member</label>
+                <select id="issueMemberSelect" class="form-control" required></select>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:100%;">Issue Book</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-title">📥 Return a Book</div>
+            <form id="returnBookForm">
+              <div class="form-group">
+                <label>Select Active Issued Record</label>
+                <select id="returnRecordSelect" class="form-control" required></select>
+              </div>
+              <div class="form-group">
+                <label>Days Overdue (for Fine Calculation)</label>
+                <input type="number" id="daysOverdueInput" class="form-control" min="0" value="0">
+              </div>
+              <button type="submit" class="btn btn-success" style="width:100%;">Return Book</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Active Issued Books Log</div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Record ID</th>
+                  <th>Book Title</th>
+                  <th>Member Name</th>
+                  <th>Issue Date</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="activeIssuedTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 5: LINKED LIST DEMONSTRATION -->
+      <section id="sll-operations" class="tab-page">
+        <div class="card">
+          <div class="card-title">Linked List Operations & Node Visualizer</div>
+          <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:0.85rem;">
+            Demonstrates Node Creation, Insert, Delete, Search, Traverse, Sort, and Concatenate on Linked Lists.
+          </p>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="sllInsertHeadBtn">Insert Head O(1)</button>
+            <button class="btn btn-primary" id="sllInsertTailBtn">Insert Tail O(n)</button>
+            <button class="btn btn-danger" id="sllDeleteHeadBtn">Delete Head O(1)</button>
+            <button class="btn btn-danger" id="sllDeleteTailBtn">Delete Tail O(n)</button>
+            <button class="btn btn-secondary" id="sllSortBtn">Sort SLL (Bubble Sort)</button>
+            <button class="btn btn-success" id="sllConcatBtn">Concatenate List 1 & List 2</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Main Singly Linked List (List 1 Nodes)</div>
+          <div id="sllVisualizerNodes"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Secondary Singly Linked List (List 2 Nodes - For Concatenation)</div>
+          <div id="secondarySLLNodes"></div>
+        </div>
+      </section>
+
+      <!-- MODULE 6: STACK DEMONSTRATION -->
+      <section id="stack-system" class="tab-page">
+        <div class="card">
+          <div class="card-title">Stack ADT Demonstration (Sequential Organization)</div>
+          <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:0.85rem;">
+            Used for storing Recently Returned Books log & Undo last operation (LIFO - Last In First Out).
+          </p>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn btn-danger" id="stackPopBtn">Pop (Undo Last Return)</button>
+            <button class="btn btn-secondary" id="stackPeekBtn">Peek (View Top Returned Book)</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Stack Visual Container (LIFO Buffer)</div>
+          <div id="stackVisualizerContainer"></div>
+        </div>
+      </section>
+
+      <!-- MODULE 7: QUEUE DEMONSTRATION -->
+      <section id="queue-system" class="tab-page">
+        <div class="sub-tabs">
+          <button class="sub-tab-btn active" data-subtab="queue-linear">Linear Queue (Waiting List)</button>
+          <button class="sub-tab-btn" data-subtab="queue-circular">Circular Queue</button>
+          <button class="sub-tab-btn" data-subtab="queue-priority">Priority Queue</button>
+          <button class="sub-tab-btn" data-subtab="queue-deque">Deque (Double Ended Queue)</button>
+        </div>
+
+        <!-- Sub-Tab 1: Linear Queue -->
+        <div id="queue-linear" class="sub-tab-content active">
+          <div class="card">
+            <div class="card-title">Linear Queue ADT (FIFO - Book Waiting List)</div>
+            <div class="form-row" style="margin-bottom:0.85rem;">
+              <div class="form-group">
+                <label>Select Book</label>
+                <select id="queueBookSelect" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <label>Select Member</label>
+                <select id="queueMemberSelect" class="form-control"></select>
+              </div>
+            </div>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <button class="btn btn-primary" id="enqueueBtn">Enqueue (Add to Waiting List)</button>
+              <button class="btn btn-secondary" id="dequeueBtn">Dequeue (Serve Front Member)</button>
+              <button class="btn btn-sm btn-secondary" id="queueFrontBtn">Front</button>
+              <button class="btn btn-sm btn-secondary" id="queueRearBtn">Rear</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Live Linear Queue Visualizer</div>
+            <div id="queueVisualizerContainer"></div>
+          </div>
+        </div>
+
+        <!-- Sub-Tab 2: Circular Queue -->
+        <div id="queue-circular" class="sub-tab-content">
+          <div class="card">
+            <div class="card-title">Circular Queue Demonstration (Fixed Capacity = 5)</div>
+            <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:0.85rem;">
+              Overcomes memory wastage of linear queues by wrapping pointers around using <code>(rear + 1) % capacity</code>.
+            </p>
+            <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+              <input type="text" id="circValInput" class="form-control" placeholder="Enter Item (e.g. Req-1)" style="max-width:200px;">
+              <button class="btn btn-primary" id="circEnqueueBtn">Enqueue Circular</button>
+              <button class="btn btn-danger" id="circDequeueBtn">Dequeue Circular</button>
+            </div>
+            <div id="circularQueueVisualizer"></div>
+          </div>
+        </div>
+
+        <!-- Sub-Tab 3: Priority Queue -->
+        <div id="queue-priority" class="sub-tab-content">
+          <div class="card">
+            <div class="card-title">Priority Queue Demonstration (Ascending & Descending)</div>
+            <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:0.85rem;">
+              Elements are dequeued based on priority order rather than arrival order (Faculty Priority = 3, Student Priority = 1).
+            </p>
+            <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+              <button class="btn btn-success" id="runPriorityQueueDemoBtn">Demonstrate Priority Queue Scheduling</button>
+            </div>
+            <div class="benchmark-box" id="priorityQueueLogBox">
+              <div class="log-step">Click 'Demonstrate Priority Queue Scheduling' to view ordering.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-Tab 4: Deque -->
+        <div id="queue-deque" class="sub-tab-content">
+          <div class="card">
+            <div class="card-title">Deque Demonstration (Double Ended Queue)</div>
+            <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:0.85rem;">
+              Allows insertion and deletion at both Front and Rear ends (Input-Restricted and Output-Restricted variants).
+            </p>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:1rem;">
+              <button class="btn btn-primary" id="dequeInsertFrontBtn">Insert Front</button>
+              <button class="btn btn-primary" id="dequeInsertRearBtn">Insert Rear</button>
+              <button class="btn btn-danger" id="dequeDeleteFrontBtn">Delete Front</button>
+              <button class="btn btn-danger" id="dequeDeleteRearBtn">Delete Rear</button>
+            </div>
+            <div id="dequeVisualizerContainer"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 8: SPARSE MATRIX DEMONSTRATION -->
+      <section id="sparse-matrix" class="tab-page">
+        <div class="card">
+          <div class="card-title">Sparse Matrix Demonstration (3-Tuple Representation)</div>
+          <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:0.85rem;">
+            A Sparse Matrix contains mostly zero values. Storing non-zero entries as <code>(Row, Column, Value)</code> saves significant memory.
+          </p>
+          <div class="form-row" style="margin-bottom:1rem;">
+            <div class="form-group">
+              <label>Select Preset Matrix</label>
+              <select id="sparseMatrixPresetSelect" class="form-control">
+                <option value="preset1">Member x Book Issue Status Matrix (4x5)</option>
+                <option value="preset2">Shelf Category Inventory Grid (3x4)</option>
+              </select>
+            </div>
+          </div>
+          <div id="sparseMatrixDemoContainer"></div>
+        </div>
+      </section>
+
+      <!-- MODULE 9: SEARCHING MODULE -->
+      <section id="searching-workbench" class="tab-page">
+        <div class="card">
+          <div class="card-title">Searching Algorithm Demonstration</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Select Search Algorithm</label>
+              <select id="searchAlgoSelect" class="form-control">
+                <option value="linear">Linear / Sequential Search O(n)</option>
+                <option value="sentinel">Sentinel Search O(n)</option>
+                <option value="binary">Binary Search O(log n) [Requires Sorted Data]</option>
+                <option value="indexed">Indexed Sequential Search O(sqrt(n))</option>
+                <option value="fibonacci">Fibonacci Search O(log n)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Target Book ID to Search</label>
+              <input type="number" id="searchKeyInput" class="form-control" value="105" placeholder="e.g. 105">
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <button class="btn btn-primary" id="runSearchBtn" style="width:100%;">Search Book</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-stats">
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="searchResStatus">-</div>
+              <div class="stat-label">Search Result</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="searchResComparisons">0</div>
+              <div class="stat-label">Comparisons Count</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="searchResTime">0 ms</div>
+              <div class="stat-label">Execution Time</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="searchResComplexity">-</div>
+              <div class="stat-label">Time Complexity</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Step-by-Step Search Execution Log</div>
+          <div class="benchmark-box" id="searchLogBox">
+            <div class="log-step">Select algorithm and click 'Search Book'.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 10: SORTING MODULE -->
+      <section id="sorting-workbench" class="tab-page">
+        <div class="card">
+          <div class="card-title">Sorting Algorithm Demonstration</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Select Sorting Algorithm</label>
+              <select id="sortAlgoSelect" class="form-control">
+                <option value="bubble">Bubble Sort O(n^2)</option>
+                <option value="selection">Selection Sort O(n^2)</option>
+                <option value="insertion">Insertion Sort O(n^2)</option>
+                <option value="quick">Quick Sort O(n log n) [Divide & Conquer]</option>
+                <option value="shell">Shell Sort O(n^1.5)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Sort Attribute Key</label>
+              <select id="sortKeyPropSelect" class="form-control">
+                <option value="id">Book ID</option>
+                <option value="availableCopies">Available Copies</option>
+                <option value="totalCopies">Total Copies</option>
+              </select>
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <button class="btn btn-primary" id="runSortBtn" style="width:100%;">Sort Books</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-stats">
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="sortResComparisons">0</div>
+              <div class="stat-label">Comparisons</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="sortResSwaps">0</div>
+              <div class="stat-label">Swaps / Shifts</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="sortResTime">0 ms</div>
+              <div class="stat-label">Time Taken</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <div class="stat-value" id="sortResComplexity">-</div>
+              <div class="stat-label">Complexity</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Original (Before Sorting) Data</div>
+          <div class="benchmark-box" id="sortBeforeBox">-</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Sorted (After Sorting) Data</div>
+          <div class="benchmark-box" id="sortAfterBox">-</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Sorting Step-by-Step Log</div>
+          <div class="benchmark-box" id="sortLogBox">
+            <div class="log-step">Click 'Sort Books' to view step-by-step partition & swap trace.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 11: ALGORITHM ANALYSIS -->
+      <section id="algorithm-analysis" class="tab-page">
+        <div class="card">
+          <div class="card-title">Algorithm Complexity Master Reference Table</div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Algorithm</th>
+                  <th>Best Case</th>
+                  <th>Average Case</th>
+                  <th>Worst Case</th>
+                  <th>Space Complexity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Linear Search</strong></td><td>O(1)</td><td>O(n)</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td><strong>Sentinel Search</strong></td><td>O(1)</td><td>O(n)</td><td>O(n)</td><td>O(1)</td></tr>
+                <tr><td><strong>Binary Search</strong></td><td>O(1)</td><td>O(log n)</td><td>O(log n)</td><td>O(1)</td></tr>
+                <tr><td><strong>Indexed Sequential Search</strong></td><td>O(1)</td><td>O(√n)</td><td>O(√n)</td><td>O(√n)</td></tr>
+                <tr><td><strong>Fibonacci Search</strong></td><td>O(1)</td><td>O(log n)</td><td>O(log n)</td><td>O(1)</td></tr>
+                <tr><td><strong>Bubble Sort</strong></td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td></tr>
+                <tr><td><strong>Selection Sort</strong></td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td></tr>
+                <tr><td><strong>Insertion Sort</strong></td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td></tr>
+                <tr><td><strong>Quick Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td></tr>
+                <tr><td><strong>Shell Sort</strong></td><td>O(n log n)</td><td>O(n^1.5)</td><td>O(n²)</td><td>O(1)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Complexity Concepts Explanation</div>
+          <div style="line-height:1.6; font-size:0.88rem; color:#334155;">
+            <p style="margin-bottom:0.5rem;"><strong>Best Case:</strong> Minimum execution time required when input data is in the ideal configuration (e.g., target element at index 0 for Linear Search).</p>
+            <p style="margin-bottom:0.5rem;"><strong>Average Case:</strong> Expected execution time for a typical random input dataset.</p>
+            <p style="margin-bottom:0.5rem;"><strong>Worst Case:</strong> Maximum time required for any input dataset (upper bound represented by Big-O notation).</p>
+            <p style="margin-bottom:0.5rem;"><strong>Space Complexity:</strong> Total auxiliary memory required by the algorithm in addition to input space.</p>
+            <p><strong>Big-O Notation:</strong> Mathematical representation of asymptotic upper bound performance as input size <em>n</em> grows.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 12: ALGORITHM PARADIGMS -->
+      <section id="algorithm-paradigms" class="tab-page">
+        <div class="card">
+          <div class="card-title">Demonstrated Algorithmic Paradigms</div>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:1rem;">
+            <div style="background:#f8fafc; padding:1rem; border-left:4px solid #2563eb; border-radius:4px;">
+              <h4 style="color:#2563eb;">1. Divide and Conquer</h4>
+              <p style="font-size:0.83rem; color:#475569; margin-top:0.4rem;">
+                Used in Quick Sort and Binary Search. Divides a problem into smaller independent subproblems, solves them recursively, and combines results.
+              </p>
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-left:4px solid #10b981; border-radius:4px;">
+              <h4 style="color:#10b981;">2. Greedy Strategy</h4>
+              <p style="font-size:0.83rem; color:#475569; margin-top:0.4rem;">
+                Used in Priority Book Reservation. Makes the locally optimal choice at each step (highest member priority score) to allocate limited library copies.
+              </p>
+            </div>
+            <div style="background:#f8fafc; padding:1rem; border-left:4px solid #8b5cf6; border-radius:4px;">
+              <h4 style="color:#8b5cf6;">3. Dynamic Programming</h4>
+              <p style="font-size:0.83rem; color:#475569; margin-top:0.4rem;">
+                Used in Overdue Late Fee Calculation. Computes cumulative fine rates across grace periods using a 1D DP lookup table <code>dp[d]</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 13: PROJECT DOCUMENTATION -->
+      <section id="documentation" class="tab-page">
+        <div class="card doc-section">
+          <h2>Project Abstract</h2>
+          <p>
+            The <strong>Smart Library Management System Using Data Structures and Algorithms</strong> is an academic mini project created for Computer Engineering students. It demonstrates core data structures (Singly Linked List, Doubly Linked List, Stack, Queue, Sparse Matrix) and algorithms (5 Searching, 5 Sorting, Divide & Conquer, Greedy, Dynamic Programming) through a practical library management system.
+          </p>
+        </div>
+
+        <div class="card doc-section">
+          <h2>Problem Statement</h2>
+          <p>
+            Manual library record systems or simple static array storage lead to memory waste, search delays, and fixed capacity constraints. This project addresses these challenges by implementing dynamic data structures and efficient searching/sorting algorithms from scratch.
+          </p>
+        </div>
+
+        <div class="card doc-section">
+          <h2>Objectives</h2>
+          <ul>
+            <li>Implement dynamic storage for books using Singly Linked List and members using Doubly Linked List.</li>
+            <li>Demonstrate Stack (LIFO) for returned book logs and Queue (FIFO, Circular, Priority, Deque) for waiting lists.</li>
+            <li>Implement 5 Searching and 5 Sorting algorithms with step logging and comparison counters.</li>
+            <li>Reduce matrix storage footprint using 3-Tuple Sparse Matrix representation.</li>
+          </ul>
+        </div>
+
+        <div class="card doc-section">
+          <h2>Data Structures & Algorithms Used</h2>
+          <p><strong>Data Structures:</strong> Singly Linked List, Doubly Linked List, Stack, Linear Queue, Circular Queue, Priority Queue, Deque, Sparse Matrix.</p>
+          <p><strong>Algorithms:</strong> Linear Search, Sentinel Search, Binary Search, Indexed Sequential Search, Fibonacci Search; Bubble Sort, Selection Sort, Insertion Sort, Quick Sort, Shell Sort.</p>
+        </div>
+      </section>
+
+      <!-- MODULE 14: VIVA VOCE SECTION -->
+      <section id="viva-section" class="tab-page">
+        <div class="card doc-section">
+          <h2>College Viva Voce Preparation Questions & Answers</h2>
+          
+          <div class="viva-card">
+            <div class="viva-q">Q1: What is a Data Structure?</div>
+            <div class="viva-a">A: A Data Structure is a specialized format for organizing, processing, retrieving, and storing data in computer memory efficiently.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q2: Why did you use Linked List instead of Array for Book Records?</div>
+            <div class="viva-a">A: Arrays have a fixed memory size and require O(n) element shifting during insertion or deletion. Linked Lists allocate memory dynamically at runtime, allowing O(1) insertion at the head.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q3: What is the difference between Singly and Doubly Linked List?</div>
+            <div class="viva-a">A: Singly Linked List nodes contain data and a single next pointer. Doubly Linked List nodes contain data, a next pointer, and a prev pointer, allowing bi-directional traversal.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q4: Why is Queue used for waiting students?</div>
+            <div class="viva-a">A: Queue follows First-In-First-Out (FIFO) ordering, ensuring members who requested an out-of-stock book first get served first fairly.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q5: What is FIFO and LIFO?</div>
+            <div class="viva-a">A: FIFO stands for First-In-First-Out (Queue). LIFO stands for Last-In-First-Out (Stack).</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q6: Why is Stack used for returned books?</div>
+            <div class="viva-a">A: Returned books are pushed onto a Stack. The most recently returned book sits at the top (LIFO), allowing an easy Undo operation via Pop.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q7: Why must Binary Search data be sorted?</div>
+            <div class="viva-a">A: Binary Search relies on comparing the target key with the middle element to eliminate half of the search range. This logic is valid only if elements are in sorted order.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q8: What is Big-O notation?</div>
+            <div class="viva-a">A: Big-O notation is a mathematical notation describing the upper bound of time or space complexity of an algorithm as the input size n grows.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q9: What is Sparse Matrix?</div>
+            <div class="viva-a">A: A Sparse Matrix is a matrix in which most elements are zero. It is stored as a 3-Tuple (Row, Column, Value) to save memory.</div>
+          </div>
+
+          <div class="viva-card">
+            <div class="viva-q">Q10: What is Circular Queue?</div>
+            <div class="viva-a">A: A Circular Queue connects the last position back to the first position in a circle, overcoming linear queue memory wastage using (rear + 1) % capacity.</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL FOR BOOK ADD/EDIT -->
+  <div class="modal-backdrop" id="bookModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalBookTitle">Add New Book</h3>
+        <button class="close-btn" id="closeBookModalBtn">&times;</button>
+      </div>
+      <form id="bookForm">
+        <div class="form-group">
+          <label>Book ID</label>
+          <input type="number" id="bookIdInput" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Book Name</label>
+          <input type="text" id="bookTitleInput" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" id="bookAuthorInput" class="form-control" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="bookCategoryInput" class="form-control">
+              <option value="Computer Engg">Computer Engg</option>
+              <option value="Algorithms">Algorithms</option>
+              <option value="Software Engg">Software Engg</option>
+              <option value="Databases">Databases</option>
+              <option value="AI & ML">AI & ML</option>
+              <option value="Networking">Networking</option>
+              <option value="Mathematics">Mathematics</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Total Copies</label>
+            <input type="number" id="bookTotalCopiesInput" class="form-control" min="1" value="3" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:0.4rem;">Save Book to Singly Linked List</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/ds.js?v=3"></script>
+  <script src="js/algorithms.js?v=3"></script>
+  <script src="js/sampleData.js?v=3"></script>
+  <script src="js/app.js?v=3"></script>
+</body>
+</html>
