@@ -1,0 +1,15 @@
+# Compiled binaries & executables
+*.exe
+bank_system.exe
+*.o
+*.obj
+
+# Temporary test files
+input.txt
+test_scenarios.txt
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

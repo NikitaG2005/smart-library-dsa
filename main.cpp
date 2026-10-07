@@ -1,67 +1,3 @@
-# Mini Project
-
-### Title of Mini-Project:
-**Bank Account Management System Using C++ (Nikita Bank of Loni)**
-
----
-
-### Name & PRN. of Group Members:
-1. **Nikita** (PRN: ____________________)
-2. **[Member Name 2]** (PRN: ____________________)
-
----
-
-### Faculty name:
-**[Prof. Faculty Name]**
-
----
-
-### Introduction: (Theory)
-
-Object-Oriented Programming (OOP) is a programming paradigm based on the concept of "objects", which contain data members (attributes) and code in the form of member functions (methods). The **Bank Account Management System** for **Nikita Bank of Loni** is designed using standard C++ to solve manual banking calculation errors and security risks.
-
-The main theoretical OOP concepts applied in this project include:
-1. **Class and Object:** A `BankAccount` class is created as a user-defined data type (blueprint). Objects are instances of this class created at runtime.
-2. **Encapsulation & Data Hiding:** Encapsulation binds data members and functions into a single unit. Data members like `accountNumber`, `accountHolder`, `balance`, `atmCardNumber`, and `atmPin` are declared `private` to prevent direct external unauthorized tampering.
-3. **Constructors:** Default constructors initialize empty values, while Parameterized constructors initialize customer attributes and auto-generate a 16-digit demo ATM card number upon creation.
-4. **Member Functions:** Public methods (`deposit()`, `withdraw()`, `checkBalance()`, `displayDetails()`, `verifyPin()`, `displayATMCard()`) provide controlled access to private data.
-5. **Data Structure (`std::vector`):** The application uses `std::vector<BankAccount>` to dynamically store, search, and manage multiple bank accounts in memory without hardcoding fixed limits.
-6. **Exception Handling (`try`, `catch`, `throw`):** Overdraw attempts or invalid deposit/withdrawal amounts throw runtime exceptions (`std::runtime_error` / `std::invalid_argument`), caught by `try-catch` blocks to prevent program crashes.
-
----
-
-### S/W/ H/w requirements:
-
-#### 1. Software Requirements (S/W):
-- **Operating System:** Windows 10 / Windows 11 / Linux / macOS
-- **Compiler:** GCC `g++` Compiler (C++11 / C++14 / C++17 standard)
-- **IDE / Text Editor:** Visual Studio Code / Dev-C++ / Code::Blocks
-- **Web Browser:** Google Chrome / Microsoft Edge / Mozilla Firefox (for Web UI Interface)
-
-#### 2. Hardware Requirements (H/W):
-- **Processor:** Dual Core Intel Core i3 / AMD Ryzen 3 or higher
-- **RAM:** Minimum 2 GB RAM (4 GB recommended)
-- **Hard Disk Space:** 100 MB free disk space
-- **Display:** 1024 x 768 display resolution or higher
-
----
-
-### SDG Mapped:
-
-This project aligns with the United Nations Sustainable Development Goals (SDGs):
-
-1. **SDG 8: Decent Work and Economic Growth (Target 8.10)**
-   - *Mapping:* Strengthens digital financial infrastructure, promotes financial literacy, and facilitates secure access to banking services and financial transactions.
-2. **SDG 9: Industry, Innovation, and Infrastructure (Target 9.5)**
-   - *Mapping:* Fosters technological innovation, secure software architecture, and efficient digital infrastructure through object-oriented software engineering.
-3. **SDG 4: Quality Education (Target 4.4)**
-   - *Mapping:* Enhances technical programming skills, computer engineering education, and practical data structure implementation among students.
-
----
-
-### Code of miniproject:
-
-```cpp
 /*
  * Bank Name: Nikita Bank of Loni
  * Project Title: Bank Account Management System Using C++
@@ -75,6 +11,7 @@ This project aligns with the United Nations Sustainable Development Goals (SDGs)
 #include <stdexcept>
 #include <limits>
 #include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -90,7 +27,6 @@ private:
     string atmPin;
 
 public:
-    // Default Constructor
     BankAccount() {
         accountNumber = "";
         accountHolder = "";
@@ -99,7 +35,6 @@ public:
         atmPin = "";
     }
 
-    // Parameterized Constructor
     BankAccount(string accNum, string name, double initialBalance, string pin, string cardNumber = "") {
         accountNumber = accNum;
         accountHolder = name;
@@ -112,7 +47,6 @@ public:
         }
     }
 
-    // Generator for 16-digit Demo ATM Card Number
     static string generateDemoATMCardNumber() {
         static int cardCounter = 1001;
         string numStr = to_string(cardCounter++);
@@ -120,18 +54,15 @@ public:
         return "4567 8912 3456 " + numStr;
     }
 
-    // Getter Functions
     string getAccountNumber() const { return accountNumber; }
     string getAccountHolder() const { return accountHolder; }
     double getBalance() const { return balance; }
     string getAtmCardNumber() const { return atmCardNumber; }
 
-    // PIN Verification
     bool verifyPin(string inputPin) const {
         return (inputPin == atmPin);
     }
 
-    // Deposit Money
     void deposit(double amount) {
         if (amount <= 0) {
             cout << "\n[Error] Deposit amount must be greater than zero.\n";
@@ -139,11 +70,10 @@ public:
         }
         balance += amount;
         cout << "\n[Success] Money Deposited Successfully!\n";
-        cout << "Deposited Amount: ₹" << fixed << setprecision(2) << amount << "\n";
-        cout << "Updated Balance: ₹" << balance << "\n";
+        cout << "Deposited Amount: $" << fixed << setprecision(2) << amount << "\n";
+        cout << "Updated Balance: $" << balance << "\n";
     }
 
-    // Withdraw Money (With Exception Handling)
     void withdraw(double amount) {
         if (amount <= 0) {
             throw invalid_argument("Withdrawal amount must be greater than zero.");
@@ -154,18 +84,16 @@ public:
 
         balance -= amount;
         cout << "\n[Success] Withdrawal Successful!\n";
-        cout << "Withdrawn Amount: ₹" << fixed << setprecision(2) << amount << "\n";
-        cout << "Remaining Balance: ₹" << balance << "\n";
+        cout << "Withdrawn Amount: $" << fixed << setprecision(2) << amount << "\n";
+        cout << "Remaining Balance: $" << balance << "\n";
     }
 
-    // Check Balance
     void checkBalance() const {
         cout << "\n----------------------------------------\n";
-        cout << " Current Balance: ₹" << fixed << setprecision(2) << balance << "\n";
+        cout << " Current Balance: $" << fixed << setprecision(2) << balance << "\n";
         cout << "----------------------------------------\n";
     }
 
-    // Display Account Details
     void displayDetails() const {
         cout << "\n----------------------------------------\n";
         cout << "          ACCOUNT DETAILS               \n";
@@ -173,13 +101,12 @@ public:
         cout << " Bank Name      : Nikita Bank of Loni   \n";
         cout << " Account Number : " << accountNumber << "\n";
         cout << " Account Holder : " << accountHolder << "\n";
-        cout << " Current Balance: ₹" << fixed << setprecision(2) << balance << "\n";
+        cout << " Current Balance: $" << fixed << setprecision(2) << balance << "\n";
         cout << " ATM Card Number: " << atmCardNumber << "\n";
         cout << " ATM Card Status: Active\n";
         cout << "----------------------------------------\n";
     }
 
-    // Display ATM Card Layout
     void displayATMCard() const {
         cout << "\n----------------------------------------\n";
         cout << "             DEMO ATM CARD              \n";
@@ -259,9 +186,9 @@ int main() {
                 break;
             }
 
-            cout << "Enter Initial Balance (₹): ";
+            cout << "Enter Initial Balance ($): ";
             while (!(cin >> initBalance) || initBalance < 0) {
-                cout << "[Error] Invalid amount. Enter positive initial balance (₹): ";
+                cout << "[Error] Invalid amount. Enter positive initial balance ($): ";
                 clearInvalidInput();
             }
 
@@ -297,7 +224,7 @@ int main() {
                 activeAccountIdx = idx;
                 cout << "\n[Success] Account Loaded Successfully!\n";
                 cout << "Welcome to Nikita Bank of Loni, " << bankAccounts[idx].getAccountHolder() << "!\n";
-                cout << "Current Balance: ₹" << fixed << setprecision(2) << bankAccounts[idx].getBalance() << "\n";
+                cout << "Current Balance: $" << fixed << setprecision(2) << bankAccounts[idx].getBalance() << "\n";
                 cout << "ATM Card Number: " << bankAccounts[idx].getAtmCardNumber() << "\n";
             }
             break;
@@ -321,7 +248,7 @@ int main() {
             }
 
             double amount;
-            cout << "Enter Amount to Deposit (₹): ";
+            cout << "Enter Amount to Deposit ($): ";
             if (cin >> amount) {
                 bankAccounts[idx].deposit(amount);
                 activeAccountIdx = idx;
@@ -359,7 +286,7 @@ int main() {
             cout << "[Success] PIN Verified Successfully!\n";
 
             double amount;
-            cout << "Enter Amount to Withdraw (₹): ";
+            cout << "Enter Amount to Withdraw ($): ";
             if (cin >> amount) {
                 try {
                     bankAccounts[idx].withdraw(amount);
@@ -462,130 +389,3 @@ int main() {
 
     return 0;
 }
-```
-
----
-
-### Output:
-
-```text
-===== NIKITA BANK OF LONI =====
-1. Create Account
-2. Access Existing Account
-3. Deposit Money
-4. Withdraw Money
-5. Check Balance
-6. Display Account Details
-7. ATM Card
-8. Exit
-Enter your choice (1-8): 1
-
---- CREATE NEW ACCOUNT ---
-Enter Account Number: 1001
-Enter Account Holder Name: Nikita
-Enter Initial Balance (₹): 5000.00
-Enter 4-Digit ATM PIN: 1234
-
-[Success] Account Created Successfully!
-Bank: Nikita Bank of Loni
-Assigned ATM Card Number: 4567 8912 3456 1001
-
-----------------------------------------
-          ACCOUNT DETAILS               
-----------------------------------------
- Bank Name      : Nikita Bank of Loni   
- Account Number : 1001
- Account Holder : Nikita
- Current Balance: ₹5000.00
- ATM Card Number: 4567 8912 3456 1001
- ATM Card Status: Active
-----------------------------------------
-
-===== NIKITA BANK OF LONI =====
-1. Create Account
-2. Access Existing Account
-3. Deposit Money
-4. Withdraw Money
-5. Check Balance
-6. Display Account Details
-7. ATM Card
-8. Exit
-Enter your choice (1-8): 3
-
-Enter Account Number: 1001
-Enter Amount to Deposit (₹): 1500.00
-
-[Success] Money Deposited Successfully!
-Deposited Amount: ₹1500.00
-Updated Balance: ₹6500.00
-
-===== NIKITA BANK OF LONI =====
-1. Create Account
-2. Access Existing Account
-3. Deposit Money
-4. Withdraw Money
-5. Check Balance
-6. Display Account Details
-7. ATM Card
-8. Exit
-Enter your choice (1-8): 4
-
-Enter Account Number: 1001
-Enter ATM PIN: 1234
-[Success] PIN Verified Successfully!
-Enter Amount to Withdraw (₹): 10000.00
-
-[Exception Caught] Insufficient Balance!
-
-===== NIKITA BANK OF LONI =====
-1. Create Account
-2. Access Existing Account
-3. Deposit Money
-4. Withdraw Money
-5. Check Balance
-6. Display Account Details
-7. ATM Card
-8. Exit
-Enter your choice (1-8): 7
-
-Enter Account Number: 1001
-Enter ATM PIN: 1234
-[Success] PIN Verified Successfully!
-
-----------------------------------------
-             DEMO ATM CARD              
-----------------------------------------
- NIKITA BANK OF LONI                    
-                                        
- Card Holder : Nikita
- Card Number : 4567 8912 3456 1001
- Account No  : 1001
- Valid Thru  : 12/30                    
- Status      : ACTIVE                   
-----------------------------------------
-
-===== NIKITA BANK OF LONI =====
-1. Create Account
-2. Access Existing Account
-3. Deposit Money
-4. Withdraw Money
-5. Check Balance
-6. Display Account Details
-7. ATM Card
-8. Exit
-Enter your choice (1-8): 8
-
-Thank you for using Nikita Bank of Loni. Goodbye!
-```
-
----
-
-### Conclusion:
-
-The **Bank Account Management System** mini project for **Nikita Bank of Loni** successfully implements core Object-Oriented Programming (OOP) principles in standard C++. 
-
-Key achievements of the project include:
-1. **Data Security & Encapsulation:** Private attributes (`balance`, `atmPin`, `accountNumber`) protect financial details from direct unauthorized manipulation.
-2. **Multi-Account Dynamic Storage:** Utilizing `std::vector<BankAccount>` enables dynamic storage and retrieval of multiple bank accounts without fixed array constraints.
-3. **Robust Exception Handling:** Applying C++ `try-catch-throw` mechanisms intercepts overdraft attempts without terminating program execution.
-4. **Practical Digital Banking Solution:** Features such as demo ATM Card generation, PIN security verification, and Passbook statement exports offer a realistic commercial banking simulation suitable for college mini project submission.
